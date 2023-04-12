@@ -1,0 +1,168 @@
+
+R version 4.2.3 (2023-03-15 ucrt) -- "Shortstop Beagle"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # Program Name: MechaCarChallenge
+> # Program Author: C Croghan
+> # dependency: tidyverse, dplyr
+> # Input: Resources/MechaCar_mpg.csv, Resources/Suspension_Coil.csv
+> # output: Tables and Plots
+> 
+> # Part 1:Linear Regression to Predict MPG
+> # load depend
+> library(dplyr)
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+> 
+> # load csv file 
+> 
+> MechaCar_mpg <-read.csv("Resources/MechaCar_mpg.csv")
+> 
+> 
+> ## Multiple Linear regression predicting mpg.
+> ## vehicle_length	vehicle_weight	spoiler_angle	ground_clearance	AWD
+> lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD,data=MechaCar_mpg)
+
+Call:
+lm(formula = mpg ~ vehicle_length + vehicle_weight + spoiler_angle + 
+    ground_clearance + AWD, data = MechaCar_mpg)
+
+Coefficients:
+     (Intercept)    vehicle_length    vehicle_weight     spoiler_angle  
+      -1.040e+02         6.267e+00         1.245e-03         6.877e-02  
+ground_clearance               AWD  
+       3.546e+00        -3.411e+00  
+
+> 
+> summary(lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD,data=MechaCar_mpg))
+
+Call:
+lm(formula = mpg ~ vehicle_length + vehicle_weight + spoiler_angle + 
+    ground_clearance + AWD, data = MechaCar_mpg)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-19.4701  -4.4994  -0.0692   5.4433  18.5849 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      -1.040e+02  1.585e+01  -6.559 5.08e-08 ***
+vehicle_length    6.267e+00  6.553e-01   9.563 2.60e-12 ***
+vehicle_weight    1.245e-03  6.890e-04   1.807   0.0776 .  
+spoiler_angle     6.877e-02  6.653e-02   1.034   0.3069    
+ground_clearance  3.546e+00  5.412e-01   6.551 5.21e-08 ***
+AWD              -3.411e+00  2.535e+00  -1.346   0.1852    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 8.774 on 44 degrees of freedom
+Multiple R-squared:  0.7149,	Adjusted R-squared:  0.6825 
+F-statistic: 22.07 on 5 and 44 DF,  p-value: 5.35e-11
+
+> 
+> # Part 2 Create Visualizations for the Trip Analysis
+> 
+> coils <-read.csv("Resources/Suspension_Coil.csv")
+> head(coils)
+  VehicleID Manufacturing_Lot  PSI
+1    V40858              Lot1 1499
+2    V40607              Lot1 1500
+3    V31443              Lot1 1500
+4     V6004              Lot1 1500
+5     V7000              Lot1 1501
+6    V17344              Lot1 1501
+> 
+> total_summary <- summarize(coils,mean = mean(PSI), median= median(PSI), var = var(PSI), sd =sd(PSI))
+> 
+> print(total_summary)
+     mean median      var       sd
+1 1498.78   1500 62.29356 7.892627
+> 
+> lot_summary <- coils %>% group_by(Manufacturing_Lot) %>%  summarize(mean = mean(PSI), median= median(PSI), var = var(PSI), sd =sd(PSI))
+> 
+> print(lot_summary)
+# A tibble: 3 × 5
+  Manufacturing_Lot  mean median     var     sd
+  <chr>             <dbl>  <dbl>   <dbl>  <dbl>
+1 Lot1              1500   1500    0.980  0.990
+2 Lot2              1500.  1500    7.47   2.73 
+3 Lot3              1496.  1498. 170.    13.0  
+> 
+> # Part 3: T-Tests on Suspension Coils
+> 
+> lots <- list("Lot1", "Lot2", "Lot3")
+> 
+> for (l in lots) {
++   lot <- coils[coils$Manufacturing_Lot == l,]
++   print(l)
++   print(t.test(lot$PSI,mu=1500))
++ }
+[1] "Lot1"
+
+	One Sample t-test
+
+data:  lot$PSI
+t = 0, df = 49, p-value = 1
+alternative hypothesis: true mean is not equal to 1500
+95 percent confidence interval:
+ 1499.719 1500.281
+sample estimates:
+mean of x 
+     1500 
+
+[1] "Lot2"
+
+	One Sample t-test
+
+data:  lot$PSI
+t = 0.51745, df = 49, p-value = 0.6072
+alternative hypothesis: true mean is not equal to 1500
+95 percent confidence interval:
+ 1499.423 1500.977
+sample estimates:
+mean of x 
+   1500.2 
+
+[1] "Lot3"
+
+	One Sample t-test
+
+data:  lot$PSI
+t = -2.0916, df = 49, p-value = 0.04168
+alternative hypothesis: true mean is not equal to 1500
+95 percent confidence interval:
+ 1492.431 1499.849
+sample estimates:
+mean of x 
+  1496.14 
+
+> 
+> ## End of File
+> 
+> proc.time()
+   user  system elapsed 
+   0.03    0.03    1.28 
