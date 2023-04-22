@@ -22,44 +22,7 @@ The design specification that the variance of the suspension coils must not exce
 
 Lot1 and Lot2 fail to reject the null hypothesis. The mean for Lot1 is right at 1500 and the mean for Lot2 is 1500.2. However, for Lot3 we reject the null hypothesis in that the mean of 1496.14 is statistically different from the value of 1500.
 
-[1] "Lot1"
-
-   One Sample t-test
-
-data:  lot$PSI
-t = 0, df = 49, p-value = 1
-alternative hypothesis: true mean is not equal to 1500
-95 percent confidence interval:
- 1499.719 1500.281
-sample estimates:
-mean of x 
-     1500 
-
-[1] "Lot2"
-
-   One Sample t-test
-
-data:  lot$PSI
-t = 0.51745, df = 49, p-value = 0.6072
-alternative hypothesis: true mean is not equal to 1500
-95 percent confidence interval:
- 1499.423 1500.977
-sample estimates:
-mean of x 
-   1500.2 
-
-[1] "Lot3"
-
-   One Sample t-test
-
-data:  lot$PSI
-t = -2.0916, df = 49, p-value = 0.04168
-alternative hypothesis: true mean is not equal to 1500
-95 percent confidence interval:
- 1492.431 1499.849
-sample estimates:
-mean of x 
-  1496.14 
+![Multiple t-tests](t-tests.png)
 
 ## Study Design: MechaCar vs Competition
 
