@@ -2,13 +2,13 @@
 
 ## Linear Regression to Predict MPG
 
-![Multiple Linear Regression Image](multiple_linear_regression.png)
-
 1. The intercept, vehicle length, and ground clearance show a non-random amount of variance to the mpg.  
 
 2. The slopes for vehicle_length and ground_clearance are positive and above 6.267 and 3.546 respectively.  The slopes for the vehicle_weight (.0012) and spoiler_angle (.07) are close to zero.  The slope for AWD is -3.411 indicating a negative relationship and, although different from 0, was not significant. 
 
 3. The R-square is above 0.7 which indicates that we have explained a significant amount of variance with our model.  However, since the intercept is significant, there is an indication that there are variables that are related to the mpg that we haven't accounted for.  In addition, there are three variables which we should consider removing and see if we can obtain a better fit since they are not significant and may be adding to the over-fitting of the model. 
+
+![Multiple Linear Regression Image](multiple_linear_regression.png)
 
 Call:
 --
